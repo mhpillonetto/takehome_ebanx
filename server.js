@@ -55,6 +55,20 @@ fastify.post('/event', async (request, reply) => {
                 //deposit(destination, amount)
                     .code(201)
                     .send({"destination":{"id":account_id,"balance":amount}})
+        
+        case 'withdrawal':
+             existing_accounts.includes(account_id) ?
+                // deposit(destination, amount)
+                reply
+                    .code(201)
+                    .send({"destination":{"id":account_id,"balance":amount}}) 
+                :
+                reply
+                //createAccount(account_id)
+                //deposit(destination, amount)
+                    .code(404)
+                    .send("Account not found")
+
         default:
                 reply
                     .code(201)

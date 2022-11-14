@@ -1,11 +1,28 @@
 const fastify = require('fastify')({ logger: true })
 
+//local storage
+const store = {
+    accounts: []
+}
+
+//functions
+const resetStore = () => {
+    store.accounts = []
+}
+
+const createAccount = (id, balance) => {
+    store.accounts.push({
+        id, balance
+    })
+}
+
 // routes
 fastify.get('/', async (request, reply) => {
   return { hello: 'world' }
 })
 
 fastify.post('/reset', async (request, reply) => {
+    resetStore()
 
     reply
       .code(200)
@@ -15,12 +32,7 @@ fastify.post('/reset', async (request, reply) => {
 
 
 fastify.get('/balance', async (request, reply) => {    
-    //placeholder
-    const existing_accounts = ['1','2','3'];
-
-    const account = await request.query;
-
-    existing_accounts.includes(account.account_id) ? (
+    store.accounts.find(account => account.id = destination) ? (
         reply
             .code(200)
             .send(account)
@@ -29,14 +41,14 @@ fastify.get('/balance', async (request, reply) => {
         .code(404)
         .send('account not found.')
 })
-
+ 
 fastify.post('/event', async (request, reply) => {
     //placeholder
     const existing_accounts = [
         {account_id:'1',balance:0},
         {account_id:'2',balance:0},
         {account_id:'3',balance:0}
-    ];
+    ]
     
     const type = request.body.type;
     const destination = request.body.destination;
